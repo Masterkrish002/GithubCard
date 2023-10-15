@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>User Card</title>
+     <link rel="stylesheet" href="card.css">
+</head>
+<body>
+    <div class="container">
+    <div class="user-card">
+        <div class="user-photo"><img src="Black_question_mark.png" alt=""></div>
+        <div class="user-name"><h3>
+            <label for="yourname">entre your profile name</label>
+            <input type="text" id = "yourname">
+        </h3></div>
+        <button class="get">Get</button>
+        <button class="followers">Followers</button>
+    </div>
+    </div>
+</body>
+<script>
+    let data;
+    let url='https://api.github.com/users/';
+    let getFollowers;
+    let getusername;
+    let getpic;
+    let requestUrl;
+    const name=document.querySelector("h3")
+    const followers=document.querySelector(".followers")
+    const get=document.querySelector('.get')
+    const userphoto=document.querySelector("img")
+    
+    
+    document.querySelector(".get").addEventListener("click",function(){
+
+        
+    let email=document.querySelector("#yourname").value
+    if(email !=''){
+    requestUrl=url+ email;
+    console.log(requestUrl)
+       
+    const xhr = new XMLHttpRequest(); //xmlhttp is a class and we taking a new reference here
+    xhr.open('GET', requestUrl)//.open method does not open by itself have to use .send() method
+    xhr.onreadystatechange =function(){
+        console.log(xhr.readyState);
+      if (xhr.readyState === 4){
+        data =JSON.parse(this.responseText)//response text type is string. json.parse to convert to object type.
+        console.log(data); 
+        getFollowers=(data.followers);
+        getusername=(data.login);
+        getpic=(data.avatar_url);
+        //console.log(data.login);
+        //console.log(data.followers);
+        //console.log(data.avatar_url);
+        //console.log(getpic)
+        
+       
+        name.innerText=`${getusername}`;
+        followers.innerText=`${getFollowers}`;
+        get.innerText="followers";
+        userphoto.setAttribute("src",`${getpic}`);
+    }
+     
+    }
+    xhr.send();
+}
+})
+    
+</script>
+</html>
